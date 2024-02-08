@@ -6,7 +6,6 @@ import Logueo from "./Logueo";
 import Create from "./Create";
 import Edit from "./Edit";
 import './App.css';
-import Body from './Body';
 
 function App() {
   const [usuario, setUsuario] = useState(null);
