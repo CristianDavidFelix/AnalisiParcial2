@@ -11,6 +11,7 @@ import './Logueo.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import loginObservable from './LoginObs';
 
 const MySwal = withReactContent(Swal)
 
@@ -74,10 +75,45 @@ const Home = () => {
     })    
   }
 
+  const [loggedIn, setIsLoggedIn] = useState(false);
+
+  const onLoginStateChanged = (isLoggedIn) => {
+    setIsLoggedIn(isLoggedIn);
+    console.log('Login state changed in Body', isLoggedIn);
+  };
+
+  useEffect(() => {
+    loginObservable.subscribe(onLoginStateChanged);
+    return () => {
+      loginObservable.unsubscribe(onLoginStateChanged);
+    };
+  }, [loginObservable]);
+
   return (
 
     <div>
       <div className='container'>
+
+      {loggedIn ? (
+          <button
+            onClick={() => {
+              loginObservable.notify(false);
+            }}
+            className="bg-black py-1.5 px-3 rounded-sm text-sm text-white hover:opacity-75"
+          >
+            Suscribirse
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              loginObservable.notify(true);
+            }}
+            className="bg-black py-1.5 px-3 rounded-sm text-sm text-white hover:opacity-75"
+          >
+            Desuscribirse
+          </button>
+        )}
+
       <div className='row'>
         <div className='col'>
           <div className="d-grid gap-2">
@@ -99,6 +135,13 @@ const Home = () => {
                   <td>
                   <Link to={`/edit/${product.id}`} className="btn btn-light"><FontAwesomeIcon icon={faPencilAlt} /></Link>
                   <button onClick={ () => { confirmDelete(product.id) } } className="btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
+                  <div>
+                  {loggedIn ? (
+                    <div> En subscripcion </div>
+                  ) : (
+                    <div> No suscrito </div>
+                  )}
+                  </div>
                   </td>
                 </tr>                
               )) }
