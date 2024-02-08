@@ -93,64 +93,65 @@ const Home = () => {
 
     <div>
       <div className='container'>
-
-      {loggedIn ? (
+      <button className="myButton cerrarSesion" onClick={cerrarSesion}>Cerrar Sesión</button>
+      <div className='row'>
+        {!loggedIn ? <div>
+              <h2>Suscríbete para acceder a las funciones de edición.</h2>
+            </div> :
+          <div className='col'>
+            <div className="d-grid gap-2">
+              <Link to="/create" className='btn btn-secondary mt-2 mb-2 btlarge'>Create</Link>    
+            </div>
+            <table className='table table-dark table-hover'>
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                { products.map( (product) => (
+                  <tr key={product.id}>
+                    <td>{product.description}</td>
+                    <td>{product.stock}</td>
+                    <td>
+                    <Link to={`/edit/${product.id}`} className="btn btn-light"><FontAwesomeIcon icon={faPencilAlt} /></Link>
+                    <button onClick={ () => { confirmDelete(product.id) } } className="btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
+                    <div>
+                    {loggedIn ? (
+                      <div> En subscripcion </div>
+                    ) : (
+                      <div> No suscrito </div>
+                    )}
+                    </div>
+                    </td>
+                  </tr>                
+                )) }
+              </tbody>
+            </table>
+          </div>}
+      </div>
+    </div>
+    {loggedIn ? (
           <button
             onClick={() => {
               loginObservable.notify(false);
             }}
-            className="bg-black py-1.5 px-3 rounded-sm text-sm text-white hover:opacity-75"
+            className="myButton"
           >
-            Suscribirse
+            Desuscribirse
           </button>
         ) : (
           <button
             onClick={() => {
               loginObservable.notify(true);
             }}
-            className="bg-black py-1.5 px-3 rounded-sm text-sm text-white hover:opacity-75"
+            className="myButton"
           >
-            Desuscribirse
+            Suscribirse
           </button>
         )}
-
-      <div className='row'>
-        <div className='col'>
-          <div className="d-grid gap-2">
-            <Link to="/create" className='btn btn-secondary mt-2 mb-2 btlarge'>Create</Link>    
-          </div>
-          <table className='table table-dark table-hover'>
-            <thead>
-              <tr>
-                <th>Description</th>
-                <th>Stock</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              { products.map( (product) => (
-                <tr key={product.id}>
-                  <td>{product.description}</td>
-                  <td>{product.stock}</td>
-                  <td>
-                  <Link to={`/edit/${product.id}`} className="btn btn-light"><FontAwesomeIcon icon={faPencilAlt} /></Link>
-                  <button onClick={ () => { confirmDelete(product.id) } } className="btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
-                  <div>
-                  {loggedIn ? (
-                    <div> En subscripcion </div>
-                  ) : (
-                    <div> No suscrito </div>
-                  )}
-                  </div>
-                  </td>
-                </tr>                
-              )) }
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <button className="myButton" onClick={cerrarSesion}>Cerrar Sesión</button>
     </div>
   );
 };

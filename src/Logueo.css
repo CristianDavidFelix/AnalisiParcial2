@@ -140,3 +140,12 @@
     box-shadow: 0 0 10px rgba(29, 85, 239, 0.73);
   }
   
+  .cerrarSesion{
+    background-color: #721c24;
+    display: flex;
+    margin-right:.1%;
+  }
+
+  .container{
+    margin:.5%;
+  }
